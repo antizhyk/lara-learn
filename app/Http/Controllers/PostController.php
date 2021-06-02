@@ -12,7 +12,10 @@ class PostController extends Controller
     public function index()
     {
 
-        $posts = Post::all();
+        $posts = Post::find(1);
+        $category = Category::find(1);
+        $tag = Tag::find(1);
+        dd($posts->tags);
         return view('post.index', compact('posts'));
     }
 
@@ -26,12 +29,20 @@ class PostController extends Controller
     public function store()
     {
         $data = request()->validate([
-            'title' => 'string',
+            'title' => 'required|string',
             'post_content' => 'string',
             'image' => 'string',
             'category_id' => '',
+            'tags' => '',
         ]);
-        Post::create($data);
+
+        $tags = $data['tags'];
+        unset($data['tags']);
+
+        $post = Post::create($data);
+        $post->tags()->attach($tags);
+
+
         return redirect()->route('post.index');
     }
 
@@ -43,7 +54,6 @@ class PostController extends Controller
     public function edit(Post $post)
     {   $categories = Category::all();
         $tags = Tag::all();
-        dd($post);
         return view('post.edit', compact('post', 'categories', 'tags'));
     }
 
@@ -53,9 +63,15 @@ class PostController extends Controller
             'post_content' => 'string',
             'image' => 'string',
             'category_id' => '',
+            'tags' => '',
         ]);
 
+        $tags = $data['tags'];
+        unset($data['tags']);
+
         $post->update($data);
+        $post->tags()->sync($tags);
+
         return redirect()->route('post.show', $post->id);
     }
 

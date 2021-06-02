@@ -24,14 +24,16 @@
                             value="{{$category->id}}" >{{$category->title}}</option>
                     @endforeach
                 </select>
-                <select class="form-select" multiple aria-label="multiple select example">
+                <select class="form-select" multiple aria-label="multiple select example" name="tags[]">
                     @foreach($tags as $tag)
                         <option
-                            {{ $tag->id === $post->tag->id ? 'selected' : ''}}
+                            @foreach($post->tags as $postTag)
+                            {{ $tag->id === $postTag->id ? 'selected' : ''}}
+                            @endforeach
                             value="{{$tag->id}}" >{{$tag->title}}</option>
                     @endforeach
                 </select>
-                <button type="submit" class="btn btn-primary">Create</button>
+                <button type="submit" class="btn btn-primary">Update</button>
             </form>
         </div>
     </div>
