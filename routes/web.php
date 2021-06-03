@@ -13,17 +13,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
+Route::get('/', 'HomeController@index');
 
-Route::get('/', 'MainController@index')->name('main.index');
+Route::get('/main', 'MainController@index')->name('main.index');
 Route::get('/contacts', 'ContactController@index')->name('contacts.index');
 Route::get('/about', 'AboutController@index')->name('about.index');
 
-Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'middleware' => 'admin'], function () {
     Route::group(['namespace' => 'Post'], function () {
-        Route::get('/post', 'IndexController')->name('admin..index');
+        Route::get('/post', 'IndexController')->name('admin.index');
     });
 });
 
@@ -37,3 +35,7 @@ Route::group(['namespace' => 'Post'], function () {
     Route::delete('/posts/{post}', 'DestroyController')->name('post.delete');
 });
 
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

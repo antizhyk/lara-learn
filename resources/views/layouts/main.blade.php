@@ -27,6 +27,7 @@
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="{{route('contacts.index')}}">Contacts</a>
                         </li>
+
                     </ul>
                 </div>
             </div>
